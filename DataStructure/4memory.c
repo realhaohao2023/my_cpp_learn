@@ -66,6 +66,12 @@ int main(int argc, char const *argv[])
         printf("arr[%d]=%d\n", i, arr[i]);
     }
 
+    int *p0;
+    p0 = &a;
+    printf("*p0=%d\n", *p0);
+    printf("p0=%p\n", p0);
+    printf("a的地址%p\n", &a);
+
     //结构体
     POINT *point;
     point = (POINT *)malloc(sizeof(POINT)); //开辟一个POINT类型的内存空间

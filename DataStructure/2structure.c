@@ -29,7 +29,7 @@ int main()
 
     pp = &p1; //pp指向p1，pp对应的就是结构体p1的地址，那么pp就可以访问p1的成员
 
-    pp->x = 30;
+    pp->x = 30; //通过pp访问p1的成员
     pp->y = 40;
 
     printf("p1.x=%d,p1.y=%d\n", p1.x, p1.y);
