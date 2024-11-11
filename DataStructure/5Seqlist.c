@@ -19,17 +19,38 @@
 //顺序表的存储结构
 #define MAXSIZE 100
 typedef int ElemType;
-typedef struct  //定义一个顺序表
-{
-    ElemType data[MAXSIZE]; //存放顺序表元素
-    int length; //存放顺序表的长度
+// typedef struct  //定义一个顺序表
+// {
+//     ElemType data[MAXSIZE]; //存放顺序表元素
+//     int length; //存放顺序表的长度
 
+// }SeqList;
+
+typedef struct 
+{
+    ElemType *data; //存放顺序表元素
+    int length;
+    /* data */
 }SeqList;
 
+
 //顺序表的初始化
-void InitList(SeqList *L) //传递结构体变量的地址
+// void InitList(SeqList *L) //传递结构体变量的地址
+// {
+//     L->length = 0; //当前顺序表中没有元素
+// }
+
+//动态内存分配
+SeqList* InitList() //在堆内存中给顺序表申请空间
 {
-    L->length = 0; //当前顺序表中没有元素
+    SeqList *L = (SeqList *)malloc(sizeof(SeqList)); //在这里声明一个结构体指针
+    L->data = (ElemType *)malloc(MAXSIZE * sizeof(ElemType));
+    if (L->data == NULL)
+    {
+        printf("内存分配失败\n");
+        exit(0);
+    }
+    L->length = 0;
 }
 
 //遍历顺序表
@@ -128,37 +149,45 @@ int main()
     // b1.price = 20.5;
     // printf("b1.num=%d,b1.name=%s,b1.price=%f\n", b1.num, b1.name, b1.price);
 
-    SeqList L1; //声明一个顺序表
-    InitList(&L1); //初始化顺序表
-    //显示长度
-    printf("初始化成功长度为%d\n", L1.length);
-    //显示数据data占用的内存
-    printf("占用的内存为%d\n", sizeof(L1.data));
+    //SeqList L1; //声明一个顺序表
+    //InitList(&L1); //初始化顺序表
 
-    appendElem(&L1, 0);
-    appendElem(&L1, 1);
-    appendElem(&L1, 2);
-    appendElem(&L1, 3);
-    appendElem(&L1, 4);
-    appendElem(&L1, 100);
-    appendElem(&L1, 200);
-    appendElem(&L1, 300);
+    //改为动态内存分配，在初始化函数里声明一个结构体指针
+    SeqList *L1 = InitList();
+    //在后续的函数调用里，不用再加取地址符号&
+
+
+
+    //显示长度
+    printf("初始化成功长度为%d\n", L1->length);
+    //显示数据data占用的内存
+    printf("占用的内存为%d\n", sizeof(L1->data));
+
+    appendElem(L1, 0);
+    appendElem(L1, 1);
+    appendElem(L1, 2);
+    appendElem(L1, 3);
+    appendElem(L1, 4);
+    appendElem(L1, 100);
+    appendElem(L1, 200);
+    appendElem(L1, 300);
 
     //遍历顺序表
-    displayList(&L1);
+    displayList(L1);
     //分隔线
     printf("=====================================\n");
 
-    insertElem(&L1, 3, 1000);
-    displayList(&L1);
-    insertElem(&L1, 300, 1000);
+    insertElem(L1, 3, 1000);
+    displayList(L1);
+    insertElem(L1, 300, 1000);
 
     //分隔线
     printf("=====================================\n");
 
-    deleteElem(&L1, 3, &deletedata);
-    displayList(&L1);
+    deleteElem(L1, 3, &deletedata);
+    displayList(L1);
     printf("删除的数据为%d\n", deletedata);
+    printf("数据4的位置为%d\n", locateElem(L1, 4));
 
 
 
