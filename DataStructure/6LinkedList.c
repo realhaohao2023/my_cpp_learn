@@ -270,6 +270,85 @@ int isCycle(Node *head)
     return 0;
 }
 
+//双向链表，每个结点有两个指针域，一个指向前驱结点，一个指向后继结点
+
+typedef struct node
+{
+    ElemType data;
+    struct node *prior;
+    struct node *next;
+}Node2;
+
+//初始化一个双向链表
+Node2 *InitList2()
+{
+    Node2 *head = (Node2 *)malloc(sizeof(Node2));
+    if (head == NULL)
+    {
+        printf("内存分配失败\n");
+        exit(0);
+    }
+    head->data = 0;
+    head->prior = NULL;
+    head->next = NULL;
+    return head;
+}
+
+//双向链表的头插法
+//新结点的prior指向头结点，头结点的next指向新结点，新结点的next指向原本头结点的下一个结点，头结点的下一个结点的前驱指向新结点
+int insertHead2(Node2 *head, ElemType e)
+{
+    Node2 *newNode = (Node2 *)malloc(sizeof(Node2)); //为新结点申请内存
+    if (newNode == NULL)
+    {
+        printf("内存分配失败\n");
+        exit(0);
+    }
+    newNode->data = e;
+    newNode->prior = head;
+    newNode->next = head->next;
+    //head->next->prior = newNode;
+    if (head->next != NULL)
+    {
+        head->next->prior = newNode;
+    }
+    head->next = newNode;
+    return 1;
+}
+
+//双向链表尾插法
+//每次都遍历链表寻找尾结点，也可以像前面的单项链表的尾插法一样，先用一个函数找到尾结点
+//再使用尾结点插入新结点，连续尾插法，就不用每次都遍历链表
+int insertTail2(Node2 *head, ElemType e)
+{
+    Node2 *p = head;
+    while (p->next != NULL) //找到尾结点
+    {
+        p = p->next;
+    }
+    Node2 *newNode = (Node2 *)malloc(sizeof(Node2));
+    if (newNode == NULL)
+    {
+        printf("内存分配失败\n");
+        exit(0);
+    }
+    newNode->data = e;
+    newNode->prior = p;
+    newNode->next = NULL;
+    p->next = newNode;
+    return 1;
+}
+
+//遍历双向链表
+void displayList2(Node2 *head)
+{
+    Node2 *p = head->next;
+    while (p != NULL)
+    {
+        printf("%d\n", p->data);
+        p = p->next;
+    }
+}
 
 
 int main()
@@ -323,5 +402,21 @@ int main()
     //删除中间结点
     delMiddleNode(list);
     displayList(list);
+
+    //大型分隔符
+    printf("=============================================================\n");
+    Node2 *list2 = InitList2();
+
+    insertHead2(list2, 1);
+    insertHead2(list2, 2);
+    insertHead2(list2, 3);
+    insertHead2(list2, 4);
+
+    insertTail2(list2, 5);
+    insertTail2(list2, 6);
+    insertTail2(list2, 7);
+
+    displayList2(list2);
+
     return 0;
 }
