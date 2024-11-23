@@ -41,7 +41,7 @@ typedef struct
 // }
 
 //动态内存分配
-SeqList* InitList() //在堆内存中给顺序表申请空间
+SeqList* InitList() //在堆内存中给顺序表申请空间，返回一个指向顺序表的指针
 {
     SeqList *L = (SeqList *)malloc(sizeof(SeqList)); //在这里声明一个结构体指针
     L->data = (ElemType *)malloc(MAXSIZE * sizeof(ElemType));

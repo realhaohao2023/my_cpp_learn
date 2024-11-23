@@ -10,7 +10,7 @@
 
 后进先出
 
-基本操作：进展（push）和出栈（pop），前者相当于插入操作，后者相当于删除操作（删除最后插入的元素）
+基本操作：进栈（push）和出栈（pop），前者相当于插入操作，后者相当于删除操作（删除最后插入的元素）
 
 */
 
@@ -87,6 +87,75 @@ ElemType getTop(stack *s)
 
     return s->data[s->top];
 }
+
+
+
+
+/*=============================================================================*/
+
+//栈的链式存储结构
+typedef struct stack
+{
+    ElemType data;
+    struct stack *next;
+}stack_link;
+
+
+//链式栈的头结点始终指向栈顶元素，即最新进栈的元素，而不是指向栈底
+//初始化链式栈
+stack_link* initstack_link()
+{
+    stack_link *s = (stack_link *)malloc(sizeof(stack_link));
+    s->data = 0;   //头节点不存放数据
+    s->next = NULL; //头结点不是栈的一部分，s->next才是栈的第一个元素
+    return s;
+}
+
+//判断栈是否为空
+int isEmpty(stack_link *s)
+{
+    if (s->next == NULL)
+    {
+        printf("栈空\n");
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+//进栈 (头插法)
+int push_link(stack_link *s, ElemType e)
+{
+    stack_link *newNode = (stack_link *)malloc(sizeof(stack_link));
+    if (newNode == NULL)
+    {
+        printf("内存分配失败\n");
+        exit(0);
+    }
+    newNode->data = e;
+    newNode->next = s->next; //NULL
+    s->next = newNode;
+    return 1;
+}
+
+//出栈 删除头结点后的第一个结点
+int pop_link(stack_link *s, ElemType *e)
+{
+    if (isEmpty(s))
+    {
+        return -1;
+    }
+
+    stack_link *p = s->next; //指向栈顶元素，用指针指向栈顶元素，操作指针就是操作栈顶元素
+    *e = p->data;
+    s->next = p->next; //头结点执行栈顶下面的元素
+    free(p);
+    return 1;
+}
+
+//获取栈顶元素 取出s->next的data
 
 
 int main()
